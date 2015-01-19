@@ -37,7 +37,9 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/sockets',
 namespace :deploy do
 
   task :start do
-    execute :rails, "server ", "--daemon"
+    on roles(:all) do
+      execute :rails, "server ", "--daemon"
+    end
   end
 
   task :stop do
