@@ -36,9 +36,13 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/sockets',
 
 namespace :deploy do
 
-  task :start do
+  task :start => [:set_rails_env] do
     on roles(:all) do
-      execute :rails, "server ", "--daemon"
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rails, "server ", "--daemon"
+        end
+      end
     end
   end
 
