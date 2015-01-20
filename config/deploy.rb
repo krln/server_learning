@@ -47,7 +47,12 @@ namespace :deploy do
   end
 
   task :stop do
-    execute :kill, "-TERM $(cat tmp/pids/server.pid)"
+    on roles(:all) do
+      within release_path do
+        execute :kill, "-TERM $(cat tmp/pids/server.pid)"
+        execute :rm, "tmp/pids/server.pid"
+      end
+    end
   end
   desc "Restart the application"
   task :restart do
